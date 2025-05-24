@@ -16,14 +16,8 @@ void leds_init(){
     gpio_set_dir(LED_G, GPIO_OUT);
 }
 
-void off_leds(){
-    gpio_put(LED_R, 0);
-    gpio_put(LED_B, 0);
-    gpio_put(LED_G, 0);
-}
-
+// Função responsável para acionar os leds a partir da quantidade de usuários
 void atualizarLedRGB(uint8_t usuarios) {
-
     if (usuarios == 0) {
         gpio_put(LED_G, 0); gpio_put(LED_R, 0); gpio_put(LED_B, 1); 
     } else if (usuarios > 0 && usuarios < MAX_USUARIOS) {

@@ -5,24 +5,28 @@
 
 //TASK DE ENTRADA
 void vTaskEntrada(void *params) {
-    // Inicializa botão de entrada
-    gpio_init(BOTAO_ENTRADA); gpio_set_dir(BOTAO_ENTRADA, GPIO_IN); gpio_pull_up(BOTAO_ENTRADA);
+    // Inicializa o botão de entrada com pull-up
+    gpio_init(BOTAO_ENTRADA);
+    gpio_set_dir(BOTAO_ENTRADA, GPIO_IN);
+    gpio_pull_up(BOTAO_ENTRADA);
 
-    bool botaoAnterior = true;
-    char buffer[32];
+    bool botaoAnterior = true;  // Armazena o estado anterior do botão para detectar borda de descida
+    char buffer[32];           // Buffer para montar as mensagens do display
 
     while (true) {
-        bool botaoAtual = gpio_get(BOTAO_ENTRADA);
+        bool botaoAtual = gpio_get(BOTAO_ENTRADA);  // Lê o estado atual do botão
 
-        // Detecta borda de descida (pressionado)
+        // Detecta borda de descida (botão pressionado)
         if (!botaoAtual && botaoAnterior) {
+            // Verifica se ainda há vagas disponíveis
             if (uxSemaphoreGetCount(xSemaforoContagem) < MAX_USUARIOS) {
-                xSemaphoreGive(xSemaforoContagem);
-                usuariosAtivos++;
-                atualizarLedRGB(usuariosAtivos);
+                xSemaphoreGive(xSemaforoContagem);  // Libera uma vaga no semáforo
+                usuariosAtivos++;                  // Incrementa o número de usuários ativos
+                atualizarLedRGB(usuariosAtivos);  // Atualiza o LED RGB com base na ocupação
 
-                printf("[ENTRADA] Usuario entrou. Total: %d\n", usuariosAtivos);
+                printf("[ENTRADA] Usuario entrou. Total: %d\n", usuariosAtivos);  // Feedback no terminal
 
+                // Atualiza o display OLED com mensagem de entrada autorizada
                 if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                     ssd1306_fill(&ssd, 0);
                     ssd1306_draw_string(&ssd, "ENTRADA", 0, 0);
@@ -33,13 +37,14 @@ void vTaskEntrada(void *params) {
                     xSemaphoreGive(xMutexDisplay);
                 }                
             } else {
-                // Capacidade cheia – Beep curto
+                // Caso o sistema esteja lotado, emite um beep curto
                 buzzer_start_alarm();
                 vTaskDelay(pdMS_TO_TICKS(200));
                 buzzer_stop_alarm();
 
-                printf("[ENTRADA] Capacidade maxima atingida (%d)\n", MAX_USUARIOS);
+                printf("[ENTRADA] Capacidade maxima atingida (%d)\n", MAX_USUARIOS);  // Mensagem no terminal
 
+                // Atualiza o display OLED com aviso de lotação
                 if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                     ssd1306_fill(&ssd, 0);
                     ssd1306_draw_string(&ssd, "LOTADO!", 0, 0);
@@ -50,12 +55,10 @@ void vTaskEntrada(void *params) {
                     xSemaphoreGive(xMutexDisplay);
                 }
             }
-
-            vTaskDelay(pdMS_TO_TICKS(300));
+            vTaskDelay(pdMS_TO_TICKS(300)); // Anti-rebounce: evita múltiplas leituras em um clique
         }
-
-        botaoAnterior = botaoAtual;
-        vTaskDelay(pdMS_TO_TICKS(10));
+        botaoAnterior = botaoAtual;       // Atualiza o estado anterior do botão
+        vTaskDelay(pdMS_TO_TICKS(10));   // Delay curto para reduzir uso da CPU
     }
 }
 

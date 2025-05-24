@@ -31,6 +31,7 @@ void display_init(){
     ssd1306_send_data(&ssd);
 }
 
+// Função para imprimir mensagem ao iniciar o sistema
 void display_start(){
     ssd1306_fill(&ssd, 0);
     ssd1306_draw_string(&ssd, "SISTEMA", 0, 0);
