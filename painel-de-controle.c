@@ -48,8 +48,8 @@ void vTaskEntrada(void *params) {
 
                 if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                     ssd1306_fill(&ssd, 0);
-                    ssd1306_draw_string(&ssd, "Entrada", 0, 0);
-                    ssd1306_draw_string(&ssd, "autorizada", 0, 10);
+                    ssd1306_draw_string(&ssd, "ENTRADA", 0, 0);
+                    ssd1306_draw_string(&ssd, "AUTORIZADA", 0, 10);
                     sprintf(buffer, "Usuarios: %d", usuariosAtivos);
                     ssd1306_draw_string(&ssd, buffer, 0, 34);
                     ssd1306_send_data(&ssd);
@@ -65,10 +65,10 @@ void vTaskEntrada(void *params) {
 
                 if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                     ssd1306_fill(&ssd, 0);
-                    ssd1306_draw_string(&ssd, "Lotado!", 0, 16);
-                    ssd1306_draw_string(&ssd, "Aguarde...", 0, 34);
+                    ssd1306_draw_string(&ssd, "LOTADO!", 0, 0);
+                    ssd1306_draw_string(&ssd, "AGUARDE...", 0, 16);
                     sprintf(buffer, "Usuarios: %d", usuariosAtivos);
-                    ssd1306_draw_string(&ssd, buffer, 0, 54);
+                    ssd1306_draw_string(&ssd, buffer, 0, 34);
                     ssd1306_send_data(&ssd);
                     xSemaphoreGive(xMutexDisplay);
                 }
@@ -103,8 +103,8 @@ void vTaskSaida(void *params) {
 
                     if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                         ssd1306_fill(&ssd, 0);
-                        ssd1306_draw_string(&ssd, "Saida", 0, 0);
-                        ssd1306_draw_string(&ssd, "realizada", 0, 10);
+                        ssd1306_draw_string(&ssd, "SAIDA", 0, 0);
+                        ssd1306_draw_string(&ssd, "REALIZADA", 0, 10);
                         sprintf(buffer, "Usuarios: %d", usuariosAtivos);
                         ssd1306_draw_string(&ssd, buffer, 0, 34);
                         ssd1306_send_data(&ssd);
@@ -113,6 +113,14 @@ void vTaskSaida(void *params) {
                 }
             } else {
                 printf("[SAIDA] Nenhum usuario presente.\n");
+
+                if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
+                    ssd1306_fill(&ssd, 0);
+                    ssd1306_draw_string(&ssd, "VAGAS", 0, 0);
+                    ssd1306_draw_string(&ssd, "DISPONIVEIS!", 0, 10);
+                    ssd1306_send_data(&ssd);
+                    xSemaphoreGive(xMutexDisplay);
+                }
             }
 
             vTaskDelay(pdMS_TO_TICKS(300));
@@ -164,8 +172,8 @@ void vTaskReset(void *params) {
 
             if (xSemaphoreTake(xMutexDisplay, pdMS_TO_TICKS(100))) {
                 ssd1306_fill(&ssd, 0);
-                ssd1306_draw_string(&ssd, "Sistema", 0, 0);
-                ssd1306_draw_string(&ssd, "Resetado", 0, 16);
+                ssd1306_draw_string(&ssd, "SISTEMA", 0, 0);
+                ssd1306_draw_string(&ssd, "RESETADO", 0, 10);
                 sprintf(buffer, "Usuarios: 0");
                 ssd1306_draw_string(&ssd, buffer, 0, 34);
                 ssd1306_send_data(&ssd);
