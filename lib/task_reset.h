@@ -1,6 +1,8 @@
 #ifndef TASK_RESET_H
 #define TASK_RESET_H
 
+#define BOTAO_RESET 22
+
 static volatile uint32_t last_time = 0;    // Armazena o tempo do último evento (em microssegundos) para debouncing
 
 // CALLBACK DE INTERRUPÇÃO DO BOTÃO DE RESET
