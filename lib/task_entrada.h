@@ -1,7 +1,7 @@
 #ifndef TASK_ENTRADA_H
 #define TAKS_ENTRADA_H
 
-#define BOTAO_ENTRADA 6
+#define BOTAO_ENTRADA 5
 
 //TASK DE ENTRADA
 void vTaskEntrada(void *params) {
@@ -20,7 +20,7 @@ void vTaskEntrada(void *params) {
         if (!botaoAtual && botaoAnterior) {
             // Verifica se ainda há vagas disponíveis
             if (uxSemaphoreGetCount(xSemaforoContagem) < MAX_USUARIOS) {
-                xSemaphoreGive(xSemaforoContagem);  // Libera uma vaga no semáforo
+                xSemaphoreGive(xSemaforoContagem);  // Adiciona uma unidade ao semáforo de contagem.
                 usuariosAtivos++;                  // Incrementa o número de usuários ativos
                 atualizarLedRGB(usuariosAtivos);  // Atualiza o LED RGB com base na ocupação
 

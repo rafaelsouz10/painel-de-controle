@@ -1,7 +1,7 @@
 #ifndef TASK_SAIDA_H
 #define TASK_SAIDA_H
 
-#define BOTAO_SAIDA 5
+#define BOTAO_SAIDA 6
 
 void vTaskSaida(void *params) {
     // Inicializa o botão de saída com pull-up
