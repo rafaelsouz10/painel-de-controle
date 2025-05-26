@@ -129,4 +129,4 @@ O sistema fornece **feedback em tempo real** via **display OLED**, **LED RGB** e
 
 ### 7. Vídeos Demonstrativo
 
-**Click [AQUI](COLAR O LINK AQUI) para acessar o link do Vídeo Ensaio**
+**Click [AQUI](https://drive.google.com/file/d/154iCgYJpqPHi0RqOQWJ-RA5x3dlu2Ouo/view?usp=sharing) para acessar o link do Vídeo Ensaio**
