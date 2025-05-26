@@ -18,11 +18,11 @@ void leds_init(){
 
 // Função responsável para acionar os leds a partir da quantidade de usuários
 void atualizarLedRGB(uint8_t usuarios) {
-    if (usuarios == 0) {
+    if (usuarios == 0) {    // Led azul se for resetado ou a sala tiver vazia
         gpio_put(LED_G, 0); gpio_put(LED_R, 0); gpio_put(LED_B, 1); 
-    } else if (usuarios > 0 && usuarios < MAX_USUARIOS) {
+    } else if (usuarios > 0 && usuarios < MAX_USUARIOS) {   // Led verde se estiver vagas disponíveis
         gpio_put(LED_B, 0); gpio_put(LED_R, 0); gpio_put(LED_G, 1);
-    } else {
+    } else {    // Led vermelho se atingir o máximo
         gpio_put(LED_B, 0); gpio_put(LED_G, 0); gpio_put(LED_R, 1);
     }
 }
